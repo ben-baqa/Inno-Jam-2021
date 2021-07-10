@@ -2,8 +2,10 @@ extends Area2D
 
 export var follow_delay: int
 export var trail_segments: int
-export var trail_width: float
 export var trail_piece: PackedScene
+export var max_segment_distance: float = 8
+
+export var disabled: bool = false
 
 var trail = []
 var trail_parent
@@ -19,6 +21,7 @@ var trail_positions = []
 var pre_positions = []
 
 var timer: int = 0
+var should_load:bool = true
 
 func _ready():
 	player = get_node("../../player")
@@ -34,9 +37,13 @@ func _ready():
 	sprite = $sprite
 
 func _physics_process(_delta):
+	check_for_start()
+	if disabled:
+		return
+
 	record_step()
 
-	if timer > trail_segments + follow_delay:
+	if timer > follow_delay:
 		recall_step()
 	else:
 		timer += 1
@@ -44,17 +51,18 @@ func _physics_process(_delta):
 	if trail.size() > trail_segments:
 		trail.pop_front()
 	if pieces.size() > trail_segments:
-		pieces.pop_front().queue_free()
+		var p = pieces.pop_front()
+		if p:
+			p.queue_free()
 
 
 
 func record_step():
+	if !player:
+		return
 	var entry = {}
 	entry.position = player.global_position
-	entry.tex = player_sprite.texture
 	entry.flip_h = player_sprite.flip_h
-	entry.vframes = player_sprite.vframes
-	entry.hframes = player_sprite.hframes
 	entry.frame = player_sprite.frame
 	trail.append(entry)
 	pre_positions.append(entry.position)
@@ -62,22 +70,24 @@ func record_step():
 
 func recall_step():
 	var entry = trail.pop_front()
+	if !entry:
+		return
 
-	rebuild_trail_polys(entry.position)
-	var inst = trail_piece.instance()
-	inst.global_position = entry.position
-	trail_parent.add_child(inst)
-	pieces.append(inst)
-	pre_positions.pop_front()
+	build_trail(entry.position)
 
 	global_position = entry.position
-	sprite.texture = entry.tex
 	sprite.flip_h = entry.flip_h
-	sprite.vframes = entry.vframes
-	sprite.hframes = entry.hframes
 	sprite.frame = entry.frame
 
-func rebuild_trail_polys(pos):
+func build_trail(pos):
+	var block = place_collider(pos)
+	pieces.append(block)
+	pre_positions.pop_front()
+
+	var dist = global_position.distance_to(pos) > max_segment_distance
+	if pieces.size() > 0 and dist:
+		print("distance between segments was too great, lerping")
+		place_collider(global_position.linear_interpolate(pos, .5), block)
 
 	trail_positions.append(pos)
 	if trail_positions.size() > trail_segments:
@@ -85,7 +95,26 @@ func rebuild_trail_polys(pos):
 
 	line.points = PoolVector2Array(trail_positions)
 
+func place_collider(pos, parent = trail_parent):
+	var inst = trail_piece.instance()
+	inst.global_position = pos
+	parent.add_child(inst)
+	return inst
+
+func check_for_start():
+	if !player:
+		return
+	disabled = !player.started
 
 func _on_area_body_entered(body):
 	if(body.is_in_group("player")):
+		if !should_load:
+			return
+		should_load = false
+
+		var particles = get_node("../death_particles")
+		particles.global_position = player.global_position
+		particles.emitting = true
+		levels.reload_current_level(1.5)
+		player.queue_free()
 		print("oof this is bad")

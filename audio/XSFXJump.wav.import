@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/XSFXJump.wav-667d62bd87b8308356435e52e5444853.sample"
+
+[deps]
+
+source_file="res://audio/XSFXJump.wav"
+dest_files=[ "res://.import/XSFXJump.wav-667d62bd87b8308356435e52e5444853.sample" ]
+
+[params]
+
+force/8_bit=true
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

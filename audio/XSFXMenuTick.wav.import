@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/XSFXMenuTick.wav-c4b876b2d9d9dd4e8d6453b91a520cf0.sample"
+
+[deps]
+
+source_file="res://audio/XSFXMenuTick.wav"
+dest_files=[ "res://.import/XSFXMenuTick.wav-c4b876b2d9d9dd4e8d6453b91a520cf0.sample" ]
+
+[params]
+
+force/8_bit=true
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

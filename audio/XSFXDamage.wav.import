@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/XSFXDamage.wav-f2eda2fa0cb7a614c78f6b9e2e925e44.sample"
+
+[deps]
+
+source_file="res://audio/XSFXDamage.wav"
+dest_files=[ "res://.import/XSFXDamage.wav-f2eda2fa0cb7a614c78f6b9e2e925e44.sample" ]
+
+[params]
+
+force/8_bit=true
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
