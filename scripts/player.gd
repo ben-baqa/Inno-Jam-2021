@@ -6,10 +6,12 @@ export var gravity: float
 export var acc_grav: float
 export var friction: float
 export var wall_friction: float
+export var wall_hold_time: float
 
 var velocity: Vector2
 
 var wall_normal: Vector2
+var wall_detach_timer: float = 0
 
 var canJump: bool = false
 var right: bool = false
@@ -26,8 +28,6 @@ func _ready():
 	pass
 
 func _physics_process(delta):
-	velocity = move_and_slide(velocity, Vector2.UP)
-
 	match state:
 		State.idle:
 			apply_run_force()
@@ -44,6 +44,10 @@ func _physics_process(delta):
 				$anim.play("idle")
 				state = State.idle
 		State.wall:
+			if detach_from_wall(delta):
+				velocity.x -= wall_normal.x * .1
+			if !is_on_wall():
+				state = State.jumping
 			if velocity.y > 0:
 				velocity.y *= 1 - wall_friction * delta
 			if is_on_floor():
@@ -60,6 +64,7 @@ func _physics_process(delta):
 			if !is_on_floor() and is_on_wall():
 				$anim.play("into wall slide")
 				set_wall_normal()
+				velocity.x -= wall_normal.x
 				if velocity.y > 0:
 					velocity.y /= 8
 				canJump = true
@@ -71,6 +76,8 @@ func _physics_process(delta):
 	
 	if velocity.y > move_force.y * 2:
 		velocity.y = move_force.y * 2
+
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 func _input(event):
 	if event.is_action_pressed("ui_right"):
@@ -104,7 +111,7 @@ func jump_if_possible():
 		jump = false
 
 func set_wall_normal():
-	var offset = Vector2($col.shape.extents.x * 1.5, 0)
+	var offset = Vector2($col.shape.radius * 1.5, 0)
 	var pos = global_position
 	var space = get_world_2d().direct_space_state
 	var right_cast = space.intersect_ray(pos, pos + offset, [self])
@@ -115,18 +122,30 @@ func set_wall_normal():
 		wall_normal.x *= -1
 
 func wall_jump():
+	var y_vel = -wall_jump_force.y;
 	if wall_normal.x < 0:
-		if right:
-			wall_normal.x /= 1.5
 		if left:
-			wall_normal.x *= 4
+			wall_normal.x *= 1.5
+			y_vel *= .75
 	else:
 		if right:
-			wall_normal.x *= 4
-		if left:
-			wall_normal.x /= 1.5
+			wall_normal.x *= 1.5
+			y_vel *= .75
 
 	velocity += wall_normal
-	velocity.y = -wall_jump_force.y;
+	velocity.y = y_vel
 	canJump = false
 	jump = false
+
+func detach_from_wall(delta):
+	if wall_normal.x < 0 and left:
+		wall_detach_timer += delta
+	elif wall_normal.x > 0 and right:
+		wall_detach_timer += delta
+	else:
+		wall_detach_timer = 0
+
+	if wall_detach_timer > wall_hold_time:
+		state = State.jumping
+		return false
+	return true
