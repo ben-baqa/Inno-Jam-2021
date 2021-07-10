@@ -10,6 +10,7 @@ export var air_friction: float
 export var wall_friction: float
 export var wall_hold_time: float
 export var jump_hold_time: float
+export var coyote_time: float
 
 export var start_delay: float = 1
 
@@ -17,15 +18,19 @@ export var jump_sound: AudioStream
 export var wall_jump_sound: AudioStream
 
 var velocity: Vector2
+var forward: Vector2 = Vector2.RIGHT
 
 var wall_normal: Vector2
 var wall_detach_timer: float = 0
 
 var jump_hold: bool = false
 var time_jump_released = 0
+var coyote_timer = 0
 
 var grounded: bool = false
-var canJump: bool = false
+var wall: bool = false
+var coyote: bool = false
+
 var right: bool = false
 var left: bool = false
 var jump: bool = false
@@ -48,23 +53,24 @@ func _physics_process(delta):
 		return
 
 	check_ground()
+	check_wall()
 	hold_jump_input()
 	match state:
 		State.idle:
-			apply_run_force(delta)
+			apply_move_force(delta, friction)
 			jump_if_possible()
 			if right or left:
 				start_run()
 		State.running:
-			apply_run_force(delta)
+			apply_move_force(delta, friction)
 			jump_if_possible()
 			if !right and !left:
 				$anim.play("idle")
 				state = State.idle
 		State.wall:
 			if detach_from_wall(delta):
-				velocity.x -= wall_normal.x * .1
-			if !is_on_wall():
+				velocity.x = -wall_normal.x * 0.1 * delta
+			if !wall:
 				state = State.jumping
 			if velocity.y > 0:
 				velocity.y *= 1 - wall_friction * delta
@@ -75,24 +81,24 @@ func _physics_process(delta):
 			else:
 				wall_jump()
 		State.jumping:
-			apply_air_control(delta)
+			apply_move_force(delta, air_friction, air_control_ratio)
 			if grounded and velocity.y >= 0:
 				$anim.play("land")
 				$landing_sfx.play()
 				state = State.idle
-			if !grounded and is_on_wall():
-				$anim.play("into wall slide")
-				set_wall_normal()
-				velocity.x -= wall_normal.x
+			if !grounded and wall:
+				velocity.x = -wall_normal.x * 0.1 * delta
 				if velocity.y > 0:
 					velocity.y /= 8
-				canJump = true
+				$anim.play("into wall slide")
+				$landing_sfx.play()
+				state = State.wall
 	
 	velocity.y += gravity * delta
 	velocity.y += abs(velocity.y) * acc_grav * delta
 	
-	if velocity.y > move_force.y * 2:
-		velocity.y = move_force.y * 2
+	if velocity.y > move_force.y * 1.25:
+		velocity.y = move_force.y * 1.25
 
 	velocity = move_and_slide(velocity, Vector2.UP)
 
@@ -117,16 +123,18 @@ func _input(event):
 		jump_hold = true
 		time_jump_released = OS.get_ticks_msec()
 
-
-func apply_run_force(delta):
-	velocity.x *= 1 - friction * delta
+func apply_move_force(delta, fric, rat = 1):
+	velocity.x *= 1 - fric * delta
 	if right:
 		$sprite.flip_h = false
-		velocity.x += move_force.x
+		velocity.x += move_force.x * rat
+		forward = Vector2.RIGHT
 	if left:
 		$sprite.flip_h = true
-		velocity.x -= move_force.x
+		velocity.x -= move_force.x * rat
+		forward = Vector2.LEFT
 
+		
 func start_run():
 	$anim.play("run start")
 	if velocity.x > 0:
@@ -136,17 +144,9 @@ func start_run():
 	state = State.running
 
 
-func apply_air_control(delta):
-	velocity.x *= 1 - air_friction * delta
-	if right:
-		$sprite.flip_h = false
-		velocity.x += move_force.x * air_control_ratio
-	if left:
-		$sprite.flip_h = true
-		velocity.x -= move_force.x * air_control_ratio
-
 func jump_if_possible():
-	if jump and is_on_floor():
+	var coyote = OS.get_ticks_msec() < coyote_timer + coyote_time
+	if jump and (grounded || coyote):
 		state = State.jumping
 		$anim.play("jump")
 		velocity.y = -move_force.y
@@ -154,45 +154,62 @@ func jump_if_possible():
 		$sfx.play()
 		jump = false
 
-func set_wall_normal():
-	$landing_sfx.play()
+func check_wall():
+	wall_normal = -forward * wall_jump_force.x
+	var dir = forward * $col.shape.radius * 1.5
 
-	var dir = Vector2($col.shape.radius * 2, 0)
+	# check for wall in front
+	var right_cast = check_for_wall_in_direction(dir)
+	if !right_cast:
+		wall = check_wall_based_on_velocity()
+		return
+
+	wall = true
+
+func check_wall_based_on_velocity():
+	if abs(velocity.x) < 1:
+		return false
+	var forw
+	if velocity.x > 0:
+		forw = Vector2.RIGHT
+	else:
+		forw = Vector2.LEFT
+
+	var n = -forw * wall_jump_force.x
+	var dir = forw * $col.shape.radius * 1.5
+
+	# check for wall in front
+	var right_cast = check_for_wall_in_direction(dir)
+	if !right_cast:
+		return false
+
+	wall_normal = n
+	return true
+
+func check_for_wall_in_direction(dir):
 	var offset = Vector2(0, $col.shape.height)
 	var pos = global_position
 	var space = get_world_2d().direct_space_state
-	var right_cast = space.intersect_ray(pos, pos + dir, [self])
-	if !right_cast:
-		pos += offset
-		right_cast = space.intersect_ray(pos, pos + dir, [self])
-	if !right_cast:
-		pos -= offset * 2
-		right_cast = space.intersect_ray(pos, pos + dir, [self])
-
-	# var left_cast = space.intersect_ray(pos, pos - offset, [self])
-
-	wall_normal = Vector2.RIGHT * wall_jump_force.x
-	if right_cast:
-		wall_normal.x *= -1
-	state = State.wall
+	var cast = space.intersect_ray(pos, pos + dir, [self])
+	if !cast:
+		pos += offset / 2
+		cast = space.intersect_ray(pos, pos + dir, [self])
+	if !cast:
+		pos -= offset
+		cast = space.intersect_ray(pos, pos + dir, [self])
+	return !!cast
 
 func wall_jump():
-	if !jump || !canJump:
+	if !jump:
 		return
 
 	state = State.jumping
 	var y_vel = -wall_jump_force.y;
 	if wall_normal.x < 0:
-		# if left:
-		# 	wall_normal.x *= 1.5
-		# 	y_vel *= .75
-		if right:
+		if right: #jumping against wall
 			y_vel *= .6
 	else:
-		# if right:
-		# 	wall_normal.x *= 1.5
-		# 	y_vel *= .75
-		if left:
+		if left: #jumping against wall
 			y_vel *= .6
 
 	velocity += wall_normal
@@ -201,7 +218,6 @@ func wall_jump():
 	$sfx.stream = wall_jump_sound
 	$sfx.play()
 	$anim.play("wall jump")
-	canJump = false
 	jump = false
 
 func detach_from_wall(delta):
@@ -213,6 +229,7 @@ func detach_from_wall(delta):
 		wall_detach_timer = 0
 
 	if wall_detach_timer > wall_hold_time:
+		$anim.play("wall jump")
 		state = State.jumping
 		return false
 	return true
@@ -226,13 +243,22 @@ func hold_jump_input():
 		jump = false
 
 func check_ground():
-	grounded = false
-	var offset = Vector2(0, $col.shape.radius + $col.shape.height * 1.25)
-	var pos = global_position
+	var dir = Vector2(0, $col.shape.radius + $col.shape.height * 1.75)
+	var offset = Vector2($col.shape.radius * .75, 0)
+	var pos = global_position + offset
 	var space = get_world_2d().direct_space_state
-	var right_cast = space.intersect_ray(pos, pos + offset, [self])
-	if right_cast:
-		grounded = true
+	var right_cast = space.intersect_ray(pos, pos + dir, [self])
+
+	if !right_cast:
+		pos -= 2 * offset
+		right_cast = space.intersect_ray(pos, pos + dir, [self])
+		if !right_cast:
+			if grounded:
+				coyote_timer = OS.get_ticks_msec()
+			grounded = false
+			return
+
+	grounded = true
 
 func start():
 	if start_time == 0:

@@ -1,4 +1,4 @@
-extends Area2D
+extends "res://scripts/hazard.gd"
 
 export var follow_delay: int
 export var trail_segments: int
@@ -21,7 +21,6 @@ var trail_positions = []
 var pre_positions = []
 
 var timer: int = 0
-var should_load:bool = true
 
 func _ready():
 	player = get_node("../../player")
@@ -86,7 +85,6 @@ func build_trail(pos):
 
 	var dist = global_position.distance_to(pos) > max_segment_distance
 	if pieces.size() > 0 and dist:
-		print("distance between segments was too great, lerping")
 		place_collider(global_position.linear_interpolate(pos, .5), block)
 
 	trail_positions.append(pos)
@@ -105,16 +103,3 @@ func check_for_start():
 	if !player:
 		return
 	disabled = !player.started
-
-func _on_area_body_entered(body):
-	if(body.is_in_group("player")):
-		if !should_load:
-			return
-		should_load = false
-
-		var particles = get_node("../death_particles")
-		particles.global_position = player.global_position
-		particles.emitting = true
-		levels.reload_current_level(1.5)
-		player.queue_free()
-		print("oof this is bad")

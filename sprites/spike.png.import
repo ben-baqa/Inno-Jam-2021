@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player wall jump.png-860e523668e4b69c70de84eed073c3d7.stex"
+path="res://.import/spike.png-55b71ac6866a2c943ab8c832a6cf27a0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/player wall jump.png"
-dest_files=[ "res://.import/player wall jump.png-860e523668e4b69c70de84eed073c3d7.stex" ]
+source_file="res://sprites/spike.png"
+dest_files=[ "res://.import/spike.png-55b71ac6866a2c943ab8c832a6cf27a0.stex" ]
 
 [params]
 

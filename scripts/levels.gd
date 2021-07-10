@@ -1,7 +1,8 @@
 extends Node2D
 
 export(Array, PackedScene) var levels = []
-export var current_level_index:int = 0
+
+var current_level_index:int = 0
 
 var current_scene
 
@@ -30,9 +31,13 @@ func _process(delta):
 func reload_current_level(delay:float = 0):
 	load_level(current_level_index, delay)
 
+func load_next_level(delay:float = 0):
+	load_level(current_level_index + 1, delay)
+
 func load_level(n:int = current_level_index, delay:float = 0):
-	print("loading level %d with %f seconds of delay" %[n, delay])
-	# call_deferred("_deferred_load_level()", n)
+	if loading:
+		print("Error, already loading a level")
+		return
 	if n >= levels.size():
 		print("Error, tried to load a level that does not exist")
 		return;
