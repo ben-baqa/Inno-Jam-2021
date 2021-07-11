@@ -31,8 +31,8 @@ max_dist = Vector2( 100, 40 )
 
 [node name="timer parent" parent="." instance=ExtResource( 15 )]
 
-[node name="death_particles" parent="." instance=ExtResource( 6 )]
-
 [node name="chaser" parent="." instance=ExtResource( 2 )]
+
+[node name="death_particles" parent="." instance=ExtResource( 6 )]
 
 [node name="player" parent="." instance=ExtResource( 1 )]
