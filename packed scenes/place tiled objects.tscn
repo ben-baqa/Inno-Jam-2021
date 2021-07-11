@@ -12,5 +12,5 @@ script = ExtResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
-tile_names = [ "spike", "goal", "laser button", "laser" ]
+tile_names = [ "spike", "door", "laser button", "laser" ]
 objects = [ ExtResource( 1 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ) ]

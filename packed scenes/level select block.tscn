@@ -15,8 +15,7 @@ __meta__ = {
 }
 
 [node name="con" type="VSplitContainer" parent="."]
-margin_left = 2.0
-margin_right = 60.0
+margin_right = 58.0
 margin_bottom = 48.0
 split_offset = -20
 dragger_visibility = 1
@@ -46,7 +45,7 @@ grow_horizontal = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0.529412, 0.65098, 0.752941, 1 )
 text = "level 1"
 align = 1
 valign = 1

@@ -39,13 +39,13 @@ func _physics_process(_delta):
 
 func cast_laser():
 	var dir = Vector2.UP.rotated(rot) * max_length
-	var pos = global_position
+	var pos = global_position + line_pts[0]
 	var space = get_world_2d().direct_space_state
 	var cast = space.intersect_ray(pos, pos + dir)
 	if cast:
 		kill_body_if_player(cast.collider)
 
-		line_pts[1] = cast.position - pos
+		line_pts[1] = cast.position - pos + line_pts[0]
 		points = PoolVector2Array(line_pts)
 		$contact.position = line_pts[1]
 

@@ -26,7 +26,7 @@ animations = [ {
 
 [node name="laser" type="Line2D"]
 position = Vector2( 104, 56 )
-points = PoolVector2Array( 0, 0, 0, -100 )
+points = PoolVector2Array( 0, 8, 0, -100 )
 width = 1.0
 default_color = Color( 1, 0.235294, 0, 1 )
 script = ExtResource( 2 )
@@ -37,10 +37,11 @@ fluctuation_frequency = 2.0
 
 [node name="emitter" type="Sprite" parent="."]
 texture = ExtResource( 1 )
+offset = Vector2( 0, 6 )
 
 [node name="contact" type="AnimatedSprite" parent="."]
 position = Vector2( -0.176773, -48.7904 )
 frames = SubResource( 4 )
-frame = 1
+frame = 2
 playing = true
 offset = Vector2( 0, 8 )

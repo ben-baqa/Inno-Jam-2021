@@ -1,11 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://packed scenes/game.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/levels.gd" type="Script" id=2]
 [ext_resource path="res://levels/sample level.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levels/laser tutorial.tscn" type="PackedScene" id=4]
+[ext_resource path="res://levels/Usefully_Named_Level.tscn" type="PackedScene" id=5]
 
 [node name="levels" type="Node2D"]
 script = ExtResource( 2 )
-levels = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ) ]
-level_names = [ "first level", "second level", "laser tutorial" ]
+levels = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]
+level_names = [ "first level", "second level", "laser tutorial", "new level" ]
