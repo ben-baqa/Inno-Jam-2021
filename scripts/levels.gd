@@ -29,7 +29,6 @@ func _process(delta):
 			loading = false
 
 
-
 func reload_current_level(delay:float = 0):
 	$reload_sfx.play()
 	load_level(current_level_index, delay)

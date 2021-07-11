@@ -16,6 +16,8 @@ func _input(event):
 			unpause()
 		else:
 			pause()
+	if event.is_action_pressed("reload") && ! levels.in_menu:
+		retry()
 
 
 func pause():
