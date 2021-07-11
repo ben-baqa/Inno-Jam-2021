@@ -1,6 +1,7 @@
 extends Node2D
 
 export(Array, PackedScene) var levels = []
+export(Array, String) var level_names = []
 
 var current_level_index:int = 0
 
@@ -47,3 +48,8 @@ func load_level(n:int = 0, delay:float = 0):
 	load_timer = 0
 	# current_scene.z_index = -100
 	loading = true
+
+func get_level_name(n: int):
+	if n >= level_names.size():
+		return "level: %d" %[n]
+	return level_names[n]

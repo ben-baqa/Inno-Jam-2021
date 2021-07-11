@@ -50,21 +50,21 @@ func cast_laser():
 		$contact.position = line_pts[1]
 
 func kill_body_if_player(body):
-	# if(body.is_in_group("player")):
-	# 	if !should_load:
-	# 		return
-	# 	should_load = false
+	if(body.is_in_group("player")):
+		if !should_load:
+			return
+		should_load = false
 
-	# 	# var particles = get_node("../../death_particles")
-	# 	# particles.global_position = body.global_position
-	# 	# particles.emitting = true
+		var particles = get_node("../../death_particles")
+		particles.global_position = body.global_position
+		particles.emitting = true
 
-	# 	# var sound = get_node("../../death_sound")
-	# 	# sound.global_position = body.global_position
-	# 	# sound.play()
+		var sound = get_node("../../death_sound")
+		sound.global_position = body.global_position
+		sound.play()
 
-	# 	levels.reload_current_level(1.5)
-	# 	body.queue_free()
+		levels.reload_current_level(1.5)
+		body.queue_free()
 	pass
 
 func fluctuate():

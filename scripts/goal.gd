@@ -12,9 +12,7 @@ func _on_body_entered(body):
 			return
 		should_load = false
 
-		# var particles = get_node("../../goal_particles")
 		$particles.global_position = body.global_position
 		$particles.emitting = true
 
-		levels.load_next_level(1.5)
-		# body.queue_free()
+		levels.load_next_level(.75)

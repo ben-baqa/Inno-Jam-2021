@@ -8,3 +8,4 @@
 [node name="levels" type="Node2D"]
 script = ExtResource( 2 )
 levels = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ) ]
+level_names = [ "first level", "second level", "laser tutorial" ]
