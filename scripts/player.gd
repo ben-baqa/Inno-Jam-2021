@@ -29,7 +29,6 @@ var coyote_timer = 0
 
 var grounded: bool = false
 var wall: bool = false
-var coyote: bool = false
 
 var right: bool = false
 var left: bool = false
