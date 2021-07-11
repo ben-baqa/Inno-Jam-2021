@@ -16,5 +16,6 @@ func _process(_delta):
 
 func body_entered(body):
 	emit_signal("pushed")
+	$sfx.play()
 	$sprite.frame = 1
 	time_pushed = OS.get_ticks_msec()

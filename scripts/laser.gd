@@ -24,7 +24,7 @@ func _ready():
 
 	rot = rotation
 	rotation = 0
-	line_pts[0] = Vector2.DOWN.rotated(rot) * 8
+	line_pts[0] = Vector2.DOWN.rotated(rot) * 7
 	$contact.rotation = rot
 	$emitter.rotation = rot
 	cast_laser()
@@ -59,10 +59,6 @@ func kill_body_if_player(body):
 		particles.global_position = body.global_position
 		particles.emitting = true
 
-		var sound = get_node("../../death_sound")
-		sound.global_position = body.global_position
-		sound.play()
-
 		levels.reload_current_level(1.5)
 		body.queue_free()
 	pass
@@ -88,3 +84,4 @@ func enable():
 	disabled = false
 	default_color = big_col
 	$contact.visible = true
+	$on_sfx.play()

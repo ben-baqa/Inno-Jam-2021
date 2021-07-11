@@ -16,9 +16,5 @@ func _on_body_entered(body):
 		particles.global_position = body.global_position
 		particles.emitting = true
 
-		var sound = get_node("../../death_sound")
-		sound.global_position = body.global_position
-		sound.play()
-
 		levels.reload_current_level(1.5)
 		body.queue_free()

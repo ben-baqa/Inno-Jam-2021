@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://fonts/menu font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/title font.tres" type="DynamicFont" id=2]
@@ -10,6 +10,24 @@
 [ext_resource path="res://audio/XSFXMenuTick.wav" type="AudioStream" id=8]
 [ext_resource path="res://scripts/volume slider.gd" type="Script" id=9]
 [ext_resource path="res://sprites/Snail_Bail_Main_Menu.png" type="Texture" id=10]
+[ext_resource path="res://sprites/platform.png" type="Texture" id=11]
+[ext_resource path="res://sprites/White Square.png" type="Texture" id=12]
+
+[sub_resource type="StyleBoxFlat" id=16]
+bg_color = Color( 0, 0, 0, 0 )
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color( 0.168627, 0.168627, 0.168627, 1 )
+corner_detail = 1
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=19]
+bg_color = Color( 0.168627, 0.168627, 0.168627, 1 )
+
+[sub_resource type="StyleBoxFlat" id=18]
+bg_color = Color( 0.168627, 0.168627, 0.168627, 1 )
 
 [node name="menu" type="Control"]
 anchor_right = 1.0
@@ -48,6 +66,7 @@ __meta__ = {
 }
 
 [node name="main menu" type="VBoxContainer" parent="."]
+visible = false
 anchor_left = 0.053
 anchor_top = 0.058
 anchor_right = 0.95
@@ -157,11 +176,11 @@ margin_right = 252.0
 margin_bottom = 26.0
 dragger_visibility = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="main menu/Volume/VSplitContainer"]
+[node name="label con" type="CenterContainer" parent="main menu/Volume/VSplitContainer"]
 margin_right = 120.0
 margin_bottom = 26.0
 
-[node name="label" type="Label" parent="main menu/Volume/VSplitContainer/CenterContainer"]
+[node name="label" type="Label" parent="main menu/Volume/VSplitContainer/label con"]
 margin_top = 1.0
 margin_right = 120.0
 margin_bottom = 25.0
@@ -177,17 +196,24 @@ margin_right = 252.0
 margin_bottom = 26.0
 
 [node name="volume slider" type="HSlider" parent="main menu/Volume/VSplitContainer/CenterContainer2"]
-margin_top = 5.0
+margin_top = 9.0
 margin_right = 120.0
-margin_bottom = 21.0
+margin_bottom = 17.0
 rect_min_size = Vector2( 120, 0 )
 focus_neighbour_top = NodePath("../../../../Level Select/level_select_button")
 focus_neighbour_bottom = NodePath("../../../../Quit/quit_button")
 focus_next = NodePath("../../../../Quit/quit_button")
 focus_previous = NodePath("../../../../Level Select/level_select_button")
+custom_icons/grabber_highlight = ExtResource( 12 )
+custom_icons/grabber = ExtResource( 11 )
+custom_styles/slider = SubResource( 16 )
+custom_styles/grabber_area_highlight = SubResource( 19 )
+custom_styles/grabber_area = SubResource( 18 )
 min_value = -40.0
 max_value = 12.0
 script = ExtResource( 9 )
+hover_col = Color( 0.168627, 0.168627, 0.168627, 1 )
+normal_col = Color( 0.529412, 0.65098, 0.752941, 1 )
 
 [node name="Quit" type="MarginContainer" parent="main menu"]
 margin_left = 214.0
@@ -216,7 +242,7 @@ __meta__ = {
 }
 
 [node name="level select menu" type="VSplitContainer" parent="."]
-anchor_right = 1.0
+anchor_right = 0.98
 anchor_bottom = 1.0
 dragger_visibility = 1
 __meta__ = {
@@ -224,27 +250,28 @@ __meta__ = {
 }
 
 [node name="Back" type="MarginContainer" parent="level select menu"]
-margin_right = 76.0
-margin_bottom = 24.0
+margin_right = 85.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 85, 28 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="button" type="Button" parent="level select menu/Back"]
-margin_right = 76.0
-margin_bottom = 24.0
+margin_right = 85.0
+margin_bottom = 28.0
 theme = ExtResource( 3 )
 action_mode = 0
 text = "back"
 
 [node name="scroll container" type="ScrollContainer" parent="level select menu"]
-margin_left = 40.0
-margin_top = 36.0
-margin_right = 320.0
-margin_bottom = 156.0
-rect_min_size = Vector2( 280, 120 )
-rect_clip_content = false
+margin_left = 33.6
+margin_top = 40.0
+margin_right = 313.6
+margin_bottom = 180.0
+rect_min_size = Vector2( 280, 140 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
+theme = ExtResource( 3 )
 follow_focus = true
 scroll_horizontal_enabled = false
 __meta__ = {
@@ -253,7 +280,7 @@ __meta__ = {
 
 [node name="level grid" type="GridContainer" parent="level select menu/scroll container"]
 margin_right = 280.0
-margin_bottom = 120.0
+margin_bottom = 140.0
 hint_tooltip = "what a great scrollbra, wowie!"
 size_flags_horizontal = 15
 size_flags_vertical = 15
@@ -265,7 +292,7 @@ block = ExtResource( 5 )
 
 [node name="level select block" parent="level select menu/scroll container/level grid" instance=ExtResource( 5 )]
 margin_right = 140.0
-margin_bottom = 120.0
+margin_bottom = 140.0
 
 [node name="select" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )

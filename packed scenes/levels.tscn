@@ -1,12 +1,34 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://packed scenes/game.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/levels.gd" type="Script" id=2]
 [ext_resource path="res://levels/sample level.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levels/laser tutorial.tscn" type="PackedScene" id=4]
-[ext_resource path="res://levels/Usefully_Named_Level.tscn" type="PackedScene" id=5]
+[ext_resource path="res://levels/trick level 1.tscn" type="PackedScene" id=5]
+[ext_resource path="res://packed scenes/Menu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://audio/XSFXVictoryTeleport.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/XMXSnailBailStage.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/XSFXDeath.wav" type="AudioStream" id=9]
+[ext_resource path="res://levels/trick level 2.tscn" type="PackedScene" id=10]
+[ext_resource path="res://levels/trick level 3.tscn" type="PackedScene" id=11]
+[ext_resource path="res://levels/trick level 4.tscn" type="PackedScene" id=12]
+[ext_resource path="res://levels/trick level 5.tscn" type="PackedScene" id=13]
 
 [node name="levels" type="Node2D"]
 script = ExtResource( 2 )
-levels = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]
-level_names = [ "first level", "second level", "laser tutorial", "new level" ]
+levels = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ]
+level_names = [ "first level", "second level", "laser tutorial", "trick level 1", "trick level 2", "trick level 3", "trick level 4", "trick level 5" ]
+menu_scene = ExtResource( 6 )
+
+[node name="stage music" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 8 )
+autoplay = true
+
+[node name="win_sfx" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 7 )
+
+[node name="reload_sfx" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 9 )

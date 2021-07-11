@@ -41,16 +41,18 @@ func quit(_garb = 0):
 
 func play():
 	$select.play()
-	levels.load_level()
+	levels.reload_current_level()
 
 func level_select(_garb = 0):
 	level_select_menu.visible = true
+	$ls_back.visible = true
 	main_menu.visible = false
 	back_button.grab_focus()
 	$select.play()
 
 func return_to_main(_garb = 0):
 	level_select_menu.visible = false
+	$ls_back.visible = false
 	main_menu.visible = true
 	play_button.grab_focus()
 	$select.play()

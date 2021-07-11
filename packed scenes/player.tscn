@@ -1,0 +1,196 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://scripts/player.gd" type="Script" id=1]
+[ext_resource path="res://sprites/[Lettuce Sprites].png" type="Texture" id=2]
+[ext_resource path="res://audio/XSFXLanding.wav" type="AudioStream" id=3]
+[ext_resource path="res://audio/XSFXJump.wav" type="AudioStream" id=4]
+[ext_resource path="res://audio/XSFXWallJump.wav" type="AudioStream" id=5]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.0
+height = 2.0
+
+[sub_resource type="Animation" id=2]
+length = 0.0833333
+loop = true
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 13 ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.166667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0833333 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 19, 20 ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.333333
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0833333, 0.166667, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.0833333
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2 ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.666666
+loop = true
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5, 6, 7, 8, 9, 10 ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.166667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0833333 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 11, 12 ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.333333
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0833333, 0.166667, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 14, 16, 17, 18 ]
+}
+
+[sub_resource type="Animation" id=9]
+length = 0.0833333
+loop = true
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 21 ]
+}
+
+[sub_resource type="QuadMesh" id=10]
+size = Vector2( 5000, 5000 )
+
+[node name="player" type="KinematicBody2D" groups=[
+"player",
+]]
+collision/safe_margin = 0.05
+script = ExtResource( 1 )
+move_force = Vector2( 30, 500 )
+air_control_ratio = 0.35
+wall_jump_force = Vector2( 300, 400 )
+gravity = 250.0
+acc_grav = 5.0
+friction = 8.0
+air_friction = 2.0
+wall_friction = 7.0
+wall_hold_time = 0.3
+jump_hold_time = 200.0
+coyote_time = 250.0
+start_delay = 0.0
+jump_sound = ExtResource( 4 )
+wall_jump_sound = ExtResource( 5 )
+
+[node name="col" type="CollisionShape2D" parent="." groups=[
+"player",
+]]
+shape = SubResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+vframes = 5
+hframes = 5
+frame = 18
+
+[node name="anim" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/idle = SubResource( 2 )
+"anims/into wall slide" = SubResource( 3 )
+anims/jump = SubResource( 4 )
+anims/land = SubResource( 5 )
+anims/run = SubResource( 6 )
+"anims/run start" = SubResource( 7 )
+"anims/wall jump" = SubResource( 8 )
+"anims/wall slide" = SubResource( 9 )
+
+[node name="sfx" type="AudioStreamPlayer2D" parent="."]
+
+[node name="landing_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="start_filter" type="MeshInstance2D" parent="."]
+modulate = Color( 0, 0, 0, 0.294118 )
+mesh = SubResource( 10 )

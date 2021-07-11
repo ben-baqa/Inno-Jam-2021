@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://sprites/laser emitter.png" type="Texture" id=1]
 [ext_resource path="res://scripts/laser.gd" type="Script" id=2]
 [ext_resource path="res://sprites/laser contact.png" type="Texture" id=3]
+[ext_resource path="res://audio/XSFXButtonPress.wav" type="AudioStream" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
@@ -42,6 +43,9 @@ offset = Vector2( 0, 6 )
 [node name="contact" type="AnimatedSprite" parent="."]
 position = Vector2( -0.176773, -48.7904 )
 frames = SubResource( 4 )
-frame = 2
+frame = 1
 playing = true
 offset = Vector2( 0, 8 )
+
+[node name="on_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
