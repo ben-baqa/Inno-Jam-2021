@@ -1,0 +1,38 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://packed scenes/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://packed scenes/chaser.tscn" type="PackedScene" id=2]
+[ext_resource path="res://packed scenes/place tiled objects.tscn" type="PackedScene" id=3]
+[ext_resource path="res://packed scenes/timer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://packed scenes/death_particles.tscn" type="PackedScene" id=5]
+[ext_resource path="res://packed scenes/background.tscn" type="PackedScene" id=6]
+[ext_resource path="res://objects/tilemap.tres" type="TileSet" id=7]
+[ext_resource path="res://scripts/camera.gd" type="Script" id=8]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="map grid" type="TileMap" parent="."]
+z_index = -5
+tile_set = ExtResource( 7 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( -917509, 1, 10, -917508, 1, 196609, -917507, 1, 196609, -917506, 1, 196609, -917505, 1, 196609, -983040, 1, 196609, -983039, 1, 196609, -983038, 1, 196609, -983037, 1, 196609, -983036, 1, 196609, -983035, 1, 11, -851973, 1, 65539, -851972, -1610612734, 0, -917500, -1073741822, 0, -917499, 1, 65539, -786437, 1, 65539, -786436, -1610612734, 0, -851964, -1073741822, 0, -851963, 1, 65539, -720901, 1, 65539, -720900, -1610612734, 0, -786432, 7, 0, -786428, -1073741822, 0, -786427, 1, 65539, -655365, 1, 65539, -655364, -1610612734, 0, -720892, -1073741822, 0, -720891, 1, 65539, -589829, 1, 65539, -589828, -1610612734, 0, -655356, -1073741822, 0, -655355, 1, 65539, -524293, 1, 65539, -524292, -1610612734, 0, -589820, -1073741822, 0, -589819, 1, 65539, -458757, 1, 65539, -458756, -1610612734, 0, -524284, -1073741822, 0, -524283, 1, 65539, -393221, 1, 65539, -393220, -1610612734, 0, -458748, -1073741822, 0, -458747, 1, 65539, -327685, 1, 65539, -327684, -1610612734, 0, -393212, -1073741822, 0, -393211, 1, 65539, -262153, 4, 0, -262149, 1, 65539, -262148, -1610612734, 0, -327676, -1073741822, 0, -327675, 1, 65539, -196613, 1, 65539, -196612, -1610612734, 0, -262140, -1073741822, 0, -262139, 1, 65539, -131077, 1, 65539, -131076, -1610612734, 0, -196604, -1073741822, 0, -196603, 1, 65539, -65541, 1, 65539, -65540, -1610612734, 0, -131068, -1073741822, 0, -131067, 1, 65539, -5, 1, 65539, -4, -1610612734, 0, -65532, -1073741822, 0, -65531, 1, 65539, 65531, 1, 65539, 65532, -1610612734, 0, 4, -1073741822, 0, 5, 1, 65539, 131067, 1, 65546, 131068, 1, 196609, 131069, 1, 196609, 131070, 1, 196609, 131071, 1, 196609, 65536, 1, 196609, 65537, 1, 196609, 65538, 1, 196609, 65539, 1, 196609, 65540, 1, 196609, 65541, 1, 65547 )
+
+[node name="place tiled objects" parent="." instance=ExtResource( 3 )]
+
+[node name="camera" type="Camera2D" parent="."]
+visible = false
+current = true
+script = ExtResource( 8 )
+lerp_mod = Vector2( 2, 3 )
+max_dist = Vector2( 100, 40 )
+
+[node name="timer parent" parent="." instance=ExtResource( 4 )]
+
+[node name="background parent" parent="." instance=ExtResource( 6 )]
+
+[node name="death_particles" parent="." instance=ExtResource( 5 )]
+
+[node name="chaser" parent="." instance=ExtResource( 2 )]
+
+[node name="player" parent="." instance=ExtResource( 1 )]

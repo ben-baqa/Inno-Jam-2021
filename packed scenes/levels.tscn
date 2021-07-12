@@ -1,28 +1,37 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=22 format=2]
 
-[ext_resource path="res://packed scenes/game.tscn" type="PackedScene" id=1]
+[ext_resource path="res://levels/tutorial levels/tutorial 1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/levels.gd" type="Script" id=2]
-[ext_resource path="res://levels/sample level.tscn" type="PackedScene" id=3]
-[ext_resource path="res://levels/laser tutorial.tscn" type="PackedScene" id=4]
-[ext_resource path="res://levels/trick level 1.tscn" type="PackedScene" id=5]
+[ext_resource path="res://levels/tutorial levels/tutorial 2.tscn" type="PackedScene" id=3]
+[ext_resource path="res://levels/tutorial levels/laser tutorial.tscn" type="PackedScene" id=4]
+[ext_resource path="res://levels/trick levels/trick 5.tscn" type="PackedScene" id=5]
 [ext_resource path="res://packed scenes/Menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://audio/XSFXVictoryTeleport.wav" type="AudioStream" id=7]
 [ext_resource path="res://audio/XMXSnailBailStage.wav" type="AudioStream" id=8]
 [ext_resource path="res://audio/XSFXDeath.wav" type="AudioStream" id=9]
-[ext_resource path="res://levels/trick level 2.tscn" type="PackedScene" id=10]
-[ext_resource path="res://levels/trick level 3.tscn" type="PackedScene" id=11]
-[ext_resource path="res://levels/trick level 4.tscn" type="PackedScene" id=12]
-[ext_resource path="res://levels/trick level 5.tscn" type="PackedScene" id=13]
+[ext_resource path="res://levels/trick levels/trick 4.tscn" type="PackedScene" id=10]
+[ext_resource path="res://levels/trick levels/trick 2.tscn" type="PackedScene" id=11]
+[ext_resource path="res://levels/trick levels/trick 1.tscn" type="PackedScene" id=12]
+[ext_resource path="res://levels/trick levels/trick 3.tscn" type="PackedScene" id=13]
+[ext_resource path="res://levels/laser levels/return.tscn" type="PackedScene" id=14]
+[ext_resource path="res://levels/spike levels/spike level 1.tscn" type="PackedScene" id=15]
+[ext_resource path="res://levels/spike levels/gap bridge.tscn" type="PackedScene" id=16]
+[ext_resource path="res://levels/spike levels/vertical movement 2.tscn" type="PackedScene" id=17]
+[ext_resource path="res://levels/spike levels/long pit.tscn" type="PackedScene" id=18]
+[ext_resource path="res://levels/laser levels/snake.tscn" type="PackedScene" id=19]
+[ext_resource path="res://levels/laser levels/laser floor.tscn" type="PackedScene" id=20]
+[ext_resource path="res://levels/spike levels/vertical movement 1.tscn" type="PackedScene" id=21]
 
 [node name="levels" type="Node2D"]
 script = ExtResource( 2 )
-levels = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ]
-level_names = [ "first level", "second level", "laser tutorial", "trick level 1", "trick level 2", "trick level 3", "trick level 4", "trick level 5" ]
+levels = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 21 ), ExtResource( 18 ), ExtResource( 17 ), ExtResource( 4 ), ExtResource( 14 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 13 ), ExtResource( 10 ), ExtResource( 5 ) ]
+level_names = [ "tutorial", "tut: spikes", "gap", "block", "vertical 1", "long pit", "vertical 2", "tut: lasers", "return", "laser floor", "snake", "jumps", "trick", "challenge 1", "challenge 2", "challenge 3" ]
 menu_scene = ExtResource( 6 )
 
 [node name="stage music" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 8 )
+volume_db = -2.0
 autoplay = true
 
 [node name="win_sfx" type="AudioStreamPlayer" parent="."]
